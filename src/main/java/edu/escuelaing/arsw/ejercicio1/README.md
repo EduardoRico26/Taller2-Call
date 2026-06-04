@@ -83,8 +83,7 @@ Esto demuestra que la clase `URL` permite descomponer una dirección web en sus 
 
 **Figura 1.** Resultado de la ejecución del ejercicio en consola.
 
-![Ejecución Ejercicio 1](Taller2-Call/src/main/java/edu/escuelaing/arsw/ejercicio1/imagenes/ev1.png)
-
+![alt text](imagenes/ev1.png)
 ---
 
 ## Conclusiones
@@ -98,6 +97,10 @@ Esto demuestra que la clase `URL` permite descomponer una dirección web en sus 
 
 ## Bibliografía
 
-Oracle. (2025). *Custom Networking Tutorial*. Java Documentation.
+1. Benavides, L. D., & Gualtero, R. H. (2026). *Introducción a esquemas de nombres, redes, clientes y servicios con Java* [Guía de laboratorio]. Escuela Colombiana de Ingeniería Julio Garavito.
 
-https://docs.oracle.com/javase/tutorial/networking/index.html
+2. Benavides, L. D. (2026). *Connectors and Components (C&C) – Call and Return Styles* [Presentación de clase]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
+
+4. Oracle. (s.f.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
