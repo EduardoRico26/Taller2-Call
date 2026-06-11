@@ -351,3 +351,141 @@ This exercise demonstrates the basic implementation of client-server communicati
 3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
 
 4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
+
+# Exercise 3.3.2 - Trigonometric Function Server Using TCP Sockets
+
+## Objective
+
+To implement a stateful client-server application using TCP sockets in Java, where the server performs trigonometric operations on received numerical values and allows the client to dynamically change the active mathematical function through commands.
+
+---
+
+## Theoretical Background
+
+This exercise extends the concepts introduced in Exercise 3.3.1 regarding TCP socket communication and the client-server architecture.
+
+The main difference is that the server now maintains an internal state represented by the currently selected trigonometric function (`cos`, `sin`, or `tan`).
+
+Additionally, a simple application-level protocol was introduced. Besides numerical values, the client can send commands in the form:
+
+```text
+fun:sin
+fun:cos
+fun:tan
+```
+
+These commands modify the server's behavior without restarting the connection, demonstrating how communication protocols can be built on top of TCP sockets.
+
+---
+
+## Exercise Development
+
+Two applications were implemented:
+
+### TrigonometricServer
+
+The server listens on port `35000`, receives commands or numerical values, maintains the currently selected trigonometric function, and returns the corresponding result.
+
+The default operation is:
+
+```text
+cos(x)
+```
+
+Supported commands:
+
+```text
+fun:sin
+fun:cos
+fun:tan
+```
+
+### TrigonometricClient
+
+The client establishes a TCP connection with the server and allows users to send either commands or numerical values through the console.
+
+### Communication Flow
+
+```text
+Client -----> fun:sin
+Server -----> Function changed to: sin
+
+Client -----> 0
+Server -----> 0.0
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio432/*.java
+```
+
+### Execute the Server
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio432.TrigonometricServer
+```
+
+### Execute the Client
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio432.TrigonometricClient
+```
+
+---
+
+## Results Analysis
+
+The server successfully processed two different types of requests:
+
+1. Function change commands.
+2. Numerical values for computation.
+
+The active function remained stored throughout the execution, allowing multiple requests to be evaluated using the same operation until a new command was received.
+
+The tests confirmed that:
+
+* The server correctly calculated cosine values by default.
+* The active function changed when receiving valid commands.
+* Subsequent calculations used the updated function.
+* Invalid commands and invalid numerical inputs were handled appropriately.
+
+This exercise demonstrates how state can be maintained in a client-server application and how custom communication protocols can be implemented on top of TCP sockets.
+
+---
+
+## Evidence
+
+### Server Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/4.3.2.1.png)
+
+### Client Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/4.3.2.2.png)
+
+---
+
+## Conclusions
+
+1. TCP sockets can be used to implement custom communication protocols between distributed applications.
+2. A server can maintain internal state information across multiple client requests.
+3. Application-level commands allow dynamic modification of server behavior without restarting the connection.
+4. This approach resembles the request-response mechanisms used by modern web services and distributed systems.
+5. The exercise demonstrates the transition from simple data exchange to protocol-driven communication.
+
+---
+
+## References
+
+1. Benavides, L. D., & Gualtero, R. H. (2026). *Introduction to naming schemes, networks, clients, and services with Java* [Laboratory guide]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+2. Benavides, L. D. (2026). *Connectors and Components (C&C) – Call and Return Styles* [Class presentation]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
+
+4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
