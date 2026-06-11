@@ -235,7 +235,7 @@ This exercise illustrates how Java applications can consume information from ext
 
 4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
 
-# Exercise 3.3.1 - Square Number Server Using TCP Sockets
+# Exercise 4.3.1 - Square Number Server Using TCP Sockets
 
 ## Objective
 
@@ -352,7 +352,7 @@ This exercise demonstrates the basic implementation of client-server communicati
 
 4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
 
-# Exercise 3.3.2 - Trigonometric Function Server Using TCP Sockets
+# Exercise 4.3.2 - Trigonometric Function Server Using TCP Sockets
 
 ## Objective
 
@@ -480,15 +480,99 @@ This exercise demonstrates how state can be maintained in a client-server applic
 
 ---
 
-## References
 
-1. Benavides, L. D., & Gualtero, R. H. (2026). *Introduction to naming schemes, networks, clients, and services with Java* [Laboratory guide]. Escuela Colombiana de Ingeniería Julio Garavito.
+# Exercise 4.4 - Single Request Web Server
 
-2. Benavides, L. D. (2026). *Connectors and Components (C&C) – Call and Return Styles* [Class presentation]. Escuela Colombiana de Ingeniería Julio Garavito.
+## Objective
 
-3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
+To implement a basic HTTP web server in Java capable of receiving a browser request and returning a simple HTML page.
 
-4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
+---
+
+## Theoretical Background
+
+This exercise introduces the concept of a web server built on top of TCP sockets.
+
+The server listens for an incoming HTTP request, processes the request received from the browser, and returns an HTML response. Unlike the next exercise (4.5.1), this implementation handles only a single request before terminating.
+
+---
+
+## Exercise Development
+
+A simple web server was implemented using the classes `ServerSocket` and `Socket`.
+
+The server performs the following actions:
+
+1. Listens on port `35000`.
+2. Waits for a browser connection.
+3. Receives and displays the HTTP request headers.
+4. Generates a basic HTML response.
+5. Sends the response to the browser.
+6. Terminates after serving the request.
+
+The generated page displays the message:
+
+```html
+<h1>My Web Site</h1>
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio441/HttpServer.java
+```
+
+### Execute the Server
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio441.HttpServer
+```
+
+### Access from Browser
+
+```text
+http://localhost:35000
+```
+
+---
+
+## Results Analysis
+
+The server successfully accepted an incoming browser connection and displayed the received HTTP request in the console.
+
+After processing the request, it generated an HTML response that was correctly rendered by the browser.
+
+This exercise demonstrates the basic interaction between a web browser and a web server through the HTTP protocol.
+
+---
+
+## Evidence
+
+### Server Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/44.2.png)
+
+### Browser Response
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/44.1.png)
+
+---
+
+## Conclusions
+
+1. HTTP requests can be received and processed directly through TCP sockets.
+2. A web server generates responses that browsers can interpret and render.
+3. The exercise illustrates the basic request-response model used in web applications.
+4. This implementation serves as the foundation for more advanced web servers capable of handling multiple requests and resources.
+
+---
+
+
+
 
 
 # Exercise 4.5.1 - Sequential Web Server
