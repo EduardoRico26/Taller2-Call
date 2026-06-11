@@ -1,1 +1,996 @@
-# Taller2-Call
+
+# ARSW - Taller #2 Call
+
+**Author:** Eduardo Rico Duarte 
+
+**Course:** Software Architectures (ARSW)
+
+**Escuela Colombiana de Ingeniería Julio Garavito**
+
+---
+# Exercise 1 - URL Components Recognition in Java
+
+## Objective
+
+To understand the structure of a URL and become familiar with the `URL` class from the `java.net` package by identifying and extracting its different components using the methods provided by Java.
+
+---
+
+## Theoretical Background
+
+A URL (*Uniform Resource Locator*) is an address used to locate resources on a network, typically the Internet. A URL is composed of different elements that identify the communication protocol, the server hosting the resource, and the specific location of that resource.
+
+The general structure of a URL is:
+
+```text
+<protocol>://<server>:<port>/<path>?<query>#<reference>
+```
+
+For example:
+
+```text
+http://www.example.com:80/docs/index.html?course=arsw#chapter1
+```
+
+The `URL` class from the `java.net` package allows developers to represent a URL and provides methods to access each of its components.
+
+| Method           | Description                                    |
+| ---------------- | ---------------------------------------------- |
+| `getProtocol()`  | Returns the protocol used by the URL.          |
+| `getAuthority()` | Returns the authority section (host and port). |
+| `getHost()`      | Returns the host name.                         |
+| `getPort()`      | Returns the specified port number.             |
+| `getPath()`      | Returns the path of the resource.              |
+| `getQuery()`     | Returns the query string.                      |
+| `getFile()`      | Returns the path and query string.             |
+| `getRef()`       | Returns the reference (fragment) of the URL.   |
+
+---
+
+## Exercise Development
+
+A Java application was implemented to create a `URL` object using a sample web address. The program then invokes each of the methods studied and prints their corresponding values to the console.
+
+### Implemented Code
+
+```java
+URL url = new URL(
+    "http://www.example.com:80/docs/index.html?course=arsw#chapter1"
+);
+
+System.out.println("Protocol: " + url.getProtocol());
+System.out.println("Authority: " + url.getAuthority());
+System.out.println("Host: " + url.getHost());
+System.out.println("Port: " + url.getPort());
+System.out.println("Path: " + url.getPath());
+System.out.println("Query: " + url.getQuery());
+System.out.println("File: " + url.getFile());
+System.out.println("Ref: " + url.getRef());
+```
+
+---
+
+## Results Analysis
+
+After executing the program, it was observed that each method correctly returns a specific component of the URL.
+
+For example:
+
+* The protocol returned was `http`.
+* The host identified was `www.example.com`.
+* The port obtained was `80`.
+* The resource path was `/docs/index.html`.
+* The query string returned was `course=arsw`.
+* The reference fragment obtained was `chapter1`.
+
+These results demonstrate that the `URL` class provides an efficient mechanism for decomposing a web address into its fundamental elements, making it easier to process network resources within Java applications.
+
+---
+
+## Evidence
+
+### Program Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/ejercicio1/imagenes/ev1.png)
+
+---
+
+## Conclusions
+
+1. The `URL` class from the `java.net` package provides a simple and effective way to manipulate and analyze web addresses.
+2. A URL is composed of multiple elements that can be accessed independently through dedicated methods.
+3. Understanding the structure of a URL is fundamental for developing client-server applications and distributed systems.
+4. This exercise establishes the foundation for subsequent networking activities involving HTTP communication and resource retrieval from the Internet.
+
+---
+
+## References
+
+1. Benavides, L. D., & Gualtero, R. H. (2026). *Introduction to naming schemes, networks, clients, and services with Java* [Laboratory guide]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+2. Benavides, L. D. (2026). *Connectors and Components (C&C) – Call and Return Styles* [Class presentation]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
+
+4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
+
+
+# Exercise 2 - Reading and Storing Web Page Content
+
+## Objective
+
+To develop a Java application capable of requesting a URL from the user, accessing the content available at that address through network streams, and storing the retrieved information in a local HTML file for later visualization in a web browser.
+
+---
+
+## Theoretical Background
+
+Java provides several networking utilities through the `java.net` package. One of the most commonly used classes is `URL`, which represents the location of a resource on the Internet.
+
+A URL can be used not only to identify a resource but also to access its content. By opening an input stream through the `openStream()` method, Java applications can read data from a remote web server in the same way they read data from a file or from the keyboard.
+
+Streams are a fundamental concept in Java I/O operations. In this exercise:
+
+* `InputStream` is used to receive data from a remote resource.
+* `InputStreamReader` converts bytes into characters.
+* `BufferedReader` allows efficient line-by-line reading.
+* `FileWriter` and `PrintWriter` are used to write the retrieved content into a local file.
+
+This mechanism is the basis of many networked applications such as web browsers, API clients, and distributed systems.
+
+---
+
+## Exercise Development
+
+A Java application was implemented to:
+
+1. Request a URL from the user.
+2. Create a `URL` object from the provided address.
+3. Open an input stream to access the remote resource.
+4. Read the content line by line using a `BufferedReader`.
+5. Store the retrieved content into a file named `resultado.html`.
+6. Close all resources properly after the operation is completed.
+
+### Implemented Code
+
+```java
+Scanner scanner = new Scanner(System.in);
+
+System.out.print("Enter a URL: ");
+String direccion = scanner.nextLine();
+
+URL url = new URL(direccion);
+
+BufferedReader reader =
+        new BufferedReader(
+                new InputStreamReader(url.openStream()));
+
+PrintWriter writer =
+        new PrintWriter(
+                new FileWriter("resultado.html"));
+
+String linea;
+
+while ((linea = reader.readLine()) != null) {
+    writer.println(linea);
+}
+
+reader.close();
+writer.close();
+```
+
+---
+
+## Results Analysis
+
+The application successfully established a connection to the specified web resource, downloaded its HTML content, and stored the information in a local file named `resultado.html`.
+
+During testing, it was observed that:
+
+* Valid URLs produced a correct HTML file containing the page source.
+* Invalid URLs generated exceptions such as `MalformedURLException`.
+* URLs pointing to non-existent domains generated `UnknownHostException`, indicating that the DNS resolution process failed.
+
+After opening the generated file in a web browser, the downloaded content was rendered correctly, demonstrating that the application successfully retrieved and stored the remote resource.
+
+This exercise illustrates how Java applications can consume information from external web resources using network streams and basic I/O operations.
+
+---
+
+## Evidence
+
+### Program Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/Ev2.1.png)
+
+### Generated HTML File
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/Ev2.2.png)
+
+---
+
+## Conclusions
+
+1. The `URL` class allows Java applications to access resources available on the Internet.
+2. Network streams can be processed using the same mechanisms employed for local file input operations.
+3. Java's I/O classes provide an efficient way to transfer information from remote resources into local files.
+4. Exception handling is essential when working with network resources due to potential issues such as malformed URLs, unavailable servers, or DNS resolution failures.
+5. This exercise serves as a foundation for understanding HTTP clients and more advanced client-server communication mechanisms.
+
+---
+
+## References
+
+1. Benavides, L. D., & Gualtero, R. H. (2026). *Introduction to naming schemes, networks, clients, and services with Java* [Laboratory guide]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+2. Benavides, L. D. (2026). *Connectors and Components (C&C) – Call and Return Styles* [Class presentation]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
+
+4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
+
+# Exercise 4.3.1 - Square Number Server Using TCP Sockets
+
+## Objective
+
+To implement a client-server application using TCP sockets in Java, where the client sends a numerical value to the server and the server calculates and returns the square of the received number.
+
+---
+
+## Theoretical Background
+
+Sockets are communication endpoints that enable data exchange between applications running on a network. In Java, socket-based communication is implemented through the classes `Socket` and `ServerSocket` located in the `java.net` package.
+
+The client-server model consists of two main components:
+
+* **Client:** Initiates communication and sends requests.
+* **Server:** Waits for incoming connections, processes requests, and sends responses.
+
+TCP (*Transmission Control Protocol*) provides reliable communication by guaranteeing packet delivery and preserving message order. Through TCP sockets, applications can exchange information using input and output streams.
+
+In this exercise, a simple application-level protocol was implemented:
+
+1. The client sends a number.
+2. The server computes the square of the number.
+3. The server sends the result back to the client.
+
+---
+
+## Exercise Development
+
+Two independent Java applications were developed:
+
+### SquareServer
+
+The server listens on port `35000`, accepts incoming client connections, receives numerical values, calculates their squares, and sends the results back to the client.
+
+### SquareClient
+
+The client establishes a TCP connection with the server, sends a number entered by the user, and displays the response received from the server.
+
+### Communication Flow
+
+```text
+Client  ----->  Number
+Server  ----->  Square(Number)
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio331/*.java
+```
+
+### Execute the Server
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio331.SquareServer
+```
+
+### Execute the Client
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio331.SquareClient
+```
+
+---
+
+## Results Analysis
+
+The server successfully accepted incoming client connections through a TCP socket and processed numerical requests.
+
+During testing:
+
+* The client transmitted integer values correctly.
+* The server calculated the square of each received value.
+* The calculated result was returned to the client through the established connection.
+* Invalid inputs generated appropriate validation responses.
+
+This exercise demonstrates the basic implementation of client-server communication using TCP sockets and illustrates how Java applications can exchange information through network streams.
+
+---
+
+## Evidence
+
+### Server Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/3.3.1.1.png)
+
+### Client Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/3.3.1.2.png)
+
+---
+
+## Conclusions
+
+1. TCP sockets provide a reliable mechanism for communication between distributed applications.
+2. The classes `Socket` and `ServerSocket` simplify the implementation of client-server architectures in Java.
+3. Input and output streams can be used to exchange information over network connections.
+4. The client-server paradigm forms the basis of many modern distributed systems.
+5. This exercise provides a foundation for developing more advanced network services and communication protocols.
+
+---
+
+## References
+
+1. Benavides, L. D., & Gualtero, R. H. (2026). *Introduction to naming schemes, networks, clients, and services with Java* [Laboratory guide]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+2. Benavides, L. D. (2026). *Connectors and Components (C&C) – Call and Return Styles* [Class presentation]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
+
+4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
+
+# Exercise 4.3.2 - Trigonometric Function Server Using TCP Sockets
+
+## Objective
+
+To implement a stateful client-server application using TCP sockets in Java, where the server performs trigonometric operations on received numerical values and allows the client to dynamically change the active mathematical function through commands.
+
+---
+
+## Theoretical Background
+
+This exercise extends the concepts introduced in Exercise 3.3.1 regarding TCP socket communication and the client-server architecture.
+
+The main difference is that the server now maintains an internal state represented by the currently selected trigonometric function (`cos`, `sin`, or `tan`).
+
+Additionally, a simple application-level protocol was introduced. Besides numerical values, the client can send commands in the form:
+
+```text
+fun:sin
+fun:cos
+fun:tan
+```
+
+These commands modify the server's behavior without restarting the connection, demonstrating how communication protocols can be built on top of TCP sockets.
+
+---
+
+## Exercise Development
+
+Two applications were implemented:
+
+### TrigonometricServer
+
+The server listens on port `35000`, receives commands or numerical values, maintains the currently selected trigonometric function, and returns the corresponding result.
+
+The default operation is:
+
+```text
+cos(x)
+```
+
+Supported commands:
+
+```text
+fun:sin
+fun:cos
+fun:tan
+```
+
+### TrigonometricClient
+
+The client establishes a TCP connection with the server and allows users to send either commands or numerical values through the console.
+
+### Communication Flow
+
+```text
+Client -----> fun:sin
+Server -----> Function changed to: sin
+
+Client -----> 0
+Server -----> 0.0
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio432/*.java
+```
+
+### Execute the Server
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio432.TrigonometricServer
+```
+
+### Execute the Client
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio432.TrigonometricClient
+```
+
+---
+
+## Results Analysis
+
+The server successfully processed two different types of requests:
+
+1. Function change commands.
+2. Numerical values for computation.
+
+The active function remained stored throughout the execution, allowing multiple requests to be evaluated using the same operation until a new command was received.
+
+The tests confirmed that:
+
+* The server correctly calculated cosine values by default.
+* The active function changed when receiving valid commands.
+* Subsequent calculations used the updated function.
+* Invalid commands and invalid numerical inputs were handled appropriately.
+
+This exercise demonstrates how state can be maintained in a client-server application and how custom communication protocols can be implemented on top of TCP sockets.
+
+---
+
+## Evidence
+
+### Server Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/4.3.2.1.png)
+
+### Client Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/4.3.2.2.png)
+
+---
+
+## Conclusions
+
+1. TCP sockets can be used to implement custom communication protocols between distributed applications.
+2. A server can maintain internal state information across multiple client requests.
+3. Application-level commands allow dynamic modification of server behavior without restarting the connection.
+4. This approach resembles the request-response mechanisms used by modern web services and distributed systems.
+5. The exercise demonstrates the transition from simple data exchange to protocol-driven communication.
+
+---
+
+
+# Exercise 4.4 - Single Request Web Server
+
+## Objective
+
+To implement a basic HTTP web server in Java capable of receiving a browser request and returning a simple HTML page.
+
+---
+
+## Theoretical Background
+
+This exercise introduces the concept of a web server built on top of TCP sockets.
+
+The server listens for an incoming HTTP request, processes the request received from the browser, and returns an HTML response. Unlike the next exercise (4.5.1), this implementation handles only a single request before terminating.
+
+---
+
+## Exercise Development
+
+A simple web server was implemented using the classes `ServerSocket` and `Socket`.
+
+The server performs the following actions:
+
+1. Listens on port `35000`.
+2. Waits for a browser connection.
+3. Receives and displays the HTTP request headers.
+4. Generates a basic HTML response.
+5. Sends the response to the browser.
+6. Terminates after serving the request.
+
+The generated page displays the message:
+
+```html
+<h1>My Web Site</h1>
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio441/HttpServer.java
+```
+
+### Execute the Server
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio441.HttpServer
+```
+
+### Access from Browser
+
+```text
+http://localhost:35000
+```
+
+---
+
+## Results Analysis
+
+The server successfully accepted an incoming browser connection and displayed the received HTTP request in the console.
+
+After processing the request, it generated an HTML response that was correctly rendered by the browser.
+
+This exercise demonstrates the basic interaction between a web browser and a web server through the HTTP protocol.
+
+---
+
+## Evidence
+
+### Server Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/44.2.png)
+
+### Browser Response
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/44.1.png)
+
+---
+
+## Conclusions
+
+1. HTTP requests can be received and processed directly through TCP sockets.
+2. A web server generates responses that browsers can interpret and render.
+3. The exercise illustrates the basic request-response model used in web applications.
+4. This implementation serves as the foundation for more advanced web servers capable of handling multiple requests and resources.
+
+---
+
+
+
+
+
+# Exercise 4.5.1 - Sequential Web Server
+
+## Objective
+
+To implement a web server in Java capable of handling multiple sequential HTTP requests, serving static resources such as HTML pages and images requested by a web browser.
+
+---
+
+## Theoretical Background
+
+This exercise builds upon the TCP socket concepts introduced in previous exercises and extends them to the HTTP protocol.
+
+HTTP (HyperText Transfer Protocol) is the communication protocol used between web browsers and web servers. A client sends an HTTP request, and the server responds with the requested resource and the corresponding HTTP headers.
+
+A web server typically performs the following tasks:
+
+1. Listens for incoming connections on a specific port.
+2. Receives and interprets HTTP requests.
+3. Locates the requested resource.
+4. Generates an HTTP response.
+5. Sends the requested content to the client.
+
+Unlike the previous exercises, this server must remain active and process multiple requests sequentially, allowing users to navigate between different resources without restarting the application.
+
+---
+
+## Exercise Development
+
+A web server was implemented using the classes `ServerSocket` and `Socket`.
+
+The server listens on port `35000` and continuously waits for incoming requests using a loop.
+
+When a request is received, the server:
+
+1. Extracts the requested path from the HTTP request line.
+2. Searches for the corresponding file in the resources directory.
+3. Determines the content type of the file.
+4. Generates the appropriate HTTP headers.
+5. Sends the requested file to the browser.
+
+The server supports:
+
+* HTML files (`.html`)
+* PNG images (`.png`)
+* JPG/JPEG images (`.jpg`, `.jpeg`)
+* Other static resources supported by the operating system MIME detection.
+
+### Request Flow
+
+```text
+Browser
+   |
+   | GET /index.html
+   |
+Web Server
+   |
+   +--> Locate file
+   |
+   +--> Generate HTTP response
+   |
+   +--> Send content
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio451/WebServer.java
+```
+
+### Execute the Server
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio451.WebServer
+```
+
+### Access from Browser
+
+```text
+http://localhost:35000
+```
+
+Examples:
+
+```text
+http://localhost:35000/index.html
+http://localhost:35000/img/logo.png
+```
+
+---
+
+## Results Analysis
+
+The implemented server successfully handled multiple consecutive HTTP requests without requiring a restart.
+
+During testing, the browser correctly requested and displayed:
+
+* HTML pages.
+* PNG images.
+* Additional static resources.
+
+The server correctly generated HTTP responses with the appropriate headers, including content type and content length information.
+
+This exercise demonstrates the relationship between TCP sockets and the HTTP protocol and provides a simplified implementation of the basic behavior of modern web servers.
+
+---
+
+## Evidence
+
+### Server Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/451.1.png)
+
+
+### Browser Access
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/451.2.png)
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/451.3.png)
+
+### Image Delivery
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/451.4.png)
+
+---
+
+## Conclusions
+
+1. HTTP communication can be implemented directly on top of TCP sockets.
+2. A web server is responsible for interpreting requests and generating valid HTTP responses.
+3. Static resources such as HTML files and images can be served through custom Java applications.
+4. Sequential request handling allows a server to remain active and process multiple browser requests.
+5. This exercise provides the foundation for understanding the architecture of modern web servers and web applications.
+
+
+# Exercise 5.2.1 - UDP Time Service
+
+## Objective
+
+To implement a client-server application using UDP datagrams in Java, where the server provides the current system time and the client periodically updates its displayed time every five seconds while remaining operational even if the server becomes temporarily unavailable.
+
+---
+
+## Theoretical Background
+
+Unlike TCP, which establishes a reliable connection between two applications, UDP (User Datagram Protocol) is a connectionless protocol that sends independent messages called datagrams.
+
+UDP does not guarantee:
+
+* Delivery of messages.
+* Order of arrival.
+* Error recovery.
+
+However, UDP provides lower communication overhead and is suitable for applications where occasional packet loss is acceptable, such as streaming, online games, monitoring systems, and real-time status updates.
+
+In Java, UDP communication is implemented using:
+
+* `DatagramSocket`
+* `DatagramPacket`
+
+A client sends a datagram to a specific host and port, and the server responds with another datagram without establishing a persistent connection.
+
+---
+
+## Exercise Development
+
+Two applications were implemented:
+
+### TimeServerUDP
+
+The server listens on port `45000` and waits for incoming datagram requests.
+
+Whenever a request is received, the server obtains the current system time and sends it back to the client.
+
+### TimeClientUDP
+
+The client sends a request every five seconds to the server asking for the current time.
+
+The client uses a timeout mechanism to avoid blocking indefinitely if the server becomes unavailable.
+
+If the server responds successfully, the displayed time is updated.
+
+If no response is received, the client preserves the last known time and continues running until the server becomes available again.
+
+### Communication Flow
+
+```text
+Client -----> TIME
+Server -----> Current Time
+
+Client -----> TIME
+Server unavailable
+
+Client -----> TIME
+Server -----> Current Time
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio521/*.java
+```
+
+### Execute the Server
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio521.TimeServerUDP
+```
+
+### Execute the Client
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio521.TimeClientUDP
+```
+
+---
+
+## Results Analysis
+
+The implemented solution successfully demonstrated UDP communication between a client and a server.
+
+The client periodically requested the current time every five seconds and updated its displayed value whenever a response was received.
+
+During testing, the server was intentionally stopped and restarted. The client continued running correctly, displaying the last known time while the server was unavailable and automatically updating again when the server returned.
+
+This behavior illustrates the connectionless nature of UDP communication and the importance of handling missing responses gracefully.
+
+---
+
+## Evidence
+
+### Server Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/521.2.png)
+
+### Client Receiving Updates
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/521.1.png)
+
+
+---
+
+## Conclusions
+
+1. UDP communication does not require establishing a persistent connection between client and server.
+2. Datagram-based communication introduces the possibility of message loss, making timeout handling essential.
+3. The implemented client successfully tolerated temporary server failures without requiring a restart.
+4. UDP is suitable for lightweight and real-time communication scenarios where occasional packet loss is acceptable.
+5. The exercise demonstrates fundamental concepts used in distributed systems and network monitoring services.
+
+---
+
+# Exercise 6.4.1 - Distributed Chat using Java RMI
+
+## Objective
+
+To implement a distributed chat application using Java RMI (Remote Method Invocation), allowing two applications running on different hosts to communicate by invoking methods on remote objects.
+
+---
+
+## Theoretical Background
+
+RMI (Remote Method Invocation) is a Java technology that enables an object running in one Java Virtual Machine (JVM) to invoke methods on an object located in another JVM, potentially on a different machine.
+
+The RMI architecture is based on:
+
+* **Remote Interfaces**, which define the methods that can be invoked remotely.
+* **Remote Objects**, which implement those interfaces.
+* **RMI Registry**, which provides a naming service for publishing and locating remote objects.
+* **Stubs and Skeletons**, which transparently handle communication between distributed objects.
+
+Unlike socket-based communication, RMI allows developers to work with distributed systems using an object-oriented programming model.
+
+---
+
+## Exercise Development
+
+A peer-to-peer chat application was implemented using Java RMI.
+
+Each application instance acts simultaneously as:
+
+* A **server**, publishing a remote object that receives incoming messages.
+* A **client**, connecting to another remote object and sending messages.
+
+When the application starts, it requests:
+
+1. A local port where its RMI Registry will be created.
+2. The IP address of the remote application.
+3. The remote port where the other application's RMI Registry is running.
+
+After establishing the connection, both applications can exchange messages through remote method invocations.
+
+### Implemented Components
+
+#### ChatRemote
+
+Remote interface that defines the method:
+
+```java
+void receiveMessage(String message)
+```
+
+#### ChatRemoteImpl
+
+Implementation of the remote interface responsible for receiving and displaying incoming messages.
+
+#### ChatApp
+
+Main application that:
+
+* Creates the local registry.
+* Publishes the local remote object.
+* Connects to the remote registry.
+* Retrieves the remote object reference.
+* Sends messages through remote method calls.
+
+### Communication Flow
+
+```text
+Application A
+     |
+receiveMessage()
+     |
+     V
+Application B
+
+Application B
+     |
+receiveMessage()
+     |
+     V
+Application A
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio641/*.java
+```
+
+### Execute First Chat Instance
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio641.ChatApp
+```
+
+Example:
+
+```text
+Local registry port: 23000
+Remote IP: localhost
+Remote port: 24000
+```
+
+### Execute Second Chat Instance
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio641.ChatApp
+```
+
+Example:
+
+```text
+Local registry port: 24000
+Remote IP: localhost
+Remote port: 23000
+```
+
+---
+
+## Results Analysis
+
+The implemented application successfully established communication between two distributed Java processes using RMI.
+
+Each instance published a remote object and simultaneously consumed services from another remote object.
+
+Messages sent from one application were received and displayed immediately by the other application through remote method invocations.
+
+The solution demonstrates how distributed systems can be developed using Java's object-oriented communication model without manually managing low-level network protocols.
+
+---
+
+## Evidence
+
+### First Chat Instance
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/641.1.png)
+
+### Second Chat Instance
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/641.2.png)
+
+---
+
+## Conclusions
+
+1. Java RMI enables communication between distributed objects using an object-oriented model.
+2. Remote interfaces define the contract of services that can be invoked remotely.
+3. The RMI Registry allows dynamic discovery and publication of remote services.
+4. Each application can act as both client and server simultaneously.
+5. The exercise demonstrates fundamental concepts used in distributed systems, service-oriented architectures, and middleware technologies.
+
+---
+
+## References
+
+1. Benavides, L. D., & Gualtero, R. H. (2026). *Introduction to naming schemes, networks, clients, and services with Java* [Laboratory guide]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+2. Benavides, L. D. (2026). *Connectors and Components (C&C) – Call and Return Styles* [Class presentation]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
+
+4. Oracle. (n.d.). *Java RMI Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/rmi/
+
