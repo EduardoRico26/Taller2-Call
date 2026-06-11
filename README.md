@@ -489,3 +489,143 @@ This exercise demonstrates how state can be maintained in a client-server applic
 3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
 
 4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
+
+
+# Exercise 4.5.1 - Sequential Web Server
+
+## Objective
+
+To implement a web server in Java capable of handling multiple sequential HTTP requests, serving static resources such as HTML pages and images requested by a web browser.
+
+---
+
+## Theoretical Background
+
+This exercise builds upon the TCP socket concepts introduced in previous exercises and extends them to the HTTP protocol.
+
+HTTP (HyperText Transfer Protocol) is the communication protocol used between web browsers and web servers. A client sends an HTTP request, and the server responds with the requested resource and the corresponding HTTP headers.
+
+A web server typically performs the following tasks:
+
+1. Listens for incoming connections on a specific port.
+2. Receives and interprets HTTP requests.
+3. Locates the requested resource.
+4. Generates an HTTP response.
+5. Sends the requested content to the client.
+
+Unlike the previous exercises, this server must remain active and process multiple requests sequentially, allowing users to navigate between different resources without restarting the application.
+
+---
+
+## Exercise Development
+
+A web server was implemented using the classes `ServerSocket` and `Socket`.
+
+The server listens on port `35000` and continuously waits for incoming requests using a loop.
+
+When a request is received, the server:
+
+1. Extracts the requested path from the HTTP request line.
+2. Searches for the corresponding file in the resources directory.
+3. Determines the content type of the file.
+4. Generates the appropriate HTTP headers.
+5. Sends the requested file to the browser.
+
+The server supports:
+
+* HTML files (`.html`)
+* PNG images (`.png`)
+* JPG/JPEG images (`.jpg`, `.jpeg`)
+* Other static resources supported by the operating system MIME detection.
+
+### Request Flow
+
+```text
+Browser
+   |
+   | GET /index.html
+   |
+Web Server
+   |
+   +--> Locate file
+   |
+   +--> Generate HTTP response
+   |
+   +--> Send content
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio451/WebServer.java
+```
+
+### Execute the Server
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio451.WebServer
+```
+
+### Access from Browser
+
+```text
+http://localhost:35000
+```
+
+Examples:
+
+```text
+http://localhost:35000/index.html
+http://localhost:35000/img/logo.png
+```
+
+---
+
+## Results Analysis
+
+The implemented server successfully handled multiple consecutive HTTP requests without requiring a restart.
+
+During testing, the browser correctly requested and displayed:
+
+* HTML pages.
+* PNG images.
+* Additional static resources.
+
+The server correctly generated HTTP responses with the appropriate headers, including content type and content length information.
+
+This exercise demonstrates the relationship between TCP sockets and the HTTP protocol and provides a simplified implementation of the basic behavior of modern web servers.
+
+---
+
+## Evidence
+
+### Server Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/451.1.png)
+
+
+### Browser Access
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/451.2.png)
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/451.3.png)
+
+### Image Delivery
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/451.4.png)
+
+---
+
+## Conclusions
+
+1. HTTP communication can be implemented directly on top of TCP sockets.
+2. A web server is responsible for interpreting requests and generating valid HTTP responses.
+3. Static resources such as HTML files and images can be served through custom Java applications.
+4. Sequential request handling allows a server to remain active and process multiple browser requests.
+5. This exercise provides the foundation for understanding the architecture of modern web servers and web applications.
+
+
