@@ -234,3 +234,120 @@ This exercise illustrates how Java applications can consume information from ext
 3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
 
 4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
+
+# Exercise 3.3.1 - Square Number Server Using TCP Sockets
+
+## Objective
+
+To implement a client-server application using TCP sockets in Java, where the client sends a numerical value to the server and the server calculates and returns the square of the received number.
+
+---
+
+## Theoretical Background
+
+Sockets are communication endpoints that enable data exchange between applications running on a network. In Java, socket-based communication is implemented through the classes `Socket` and `ServerSocket` located in the `java.net` package.
+
+The client-server model consists of two main components:
+
+* **Client:** Initiates communication and sends requests.
+* **Server:** Waits for incoming connections, processes requests, and sends responses.
+
+TCP (*Transmission Control Protocol*) provides reliable communication by guaranteeing packet delivery and preserving message order. Through TCP sockets, applications can exchange information using input and output streams.
+
+In this exercise, a simple application-level protocol was implemented:
+
+1. The client sends a number.
+2. The server computes the square of the number.
+3. The server sends the result back to the client.
+
+---
+
+## Exercise Development
+
+Two independent Java applications were developed:
+
+### SquareServer
+
+The server listens on port `35000`, accepts incoming client connections, receives numerical values, calculates their squares, and sends the results back to the client.
+
+### SquareClient
+
+The client establishes a TCP connection with the server, sends a number entered by the user, and displays the response received from the server.
+
+### Communication Flow
+
+```text
+Client  ----->  Number
+Server  ----->  Square(Number)
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio331/*.java
+```
+
+### Execute the Server
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio331.SquareServer
+```
+
+### Execute the Client
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio331.SquareClient
+```
+
+---
+
+## Results Analysis
+
+The server successfully accepted incoming client connections through a TCP socket and processed numerical requests.
+
+During testing:
+
+* The client transmitted integer values correctly.
+* The server calculated the square of each received value.
+* The calculated result was returned to the client through the established connection.
+* Invalid inputs generated appropriate validation responses.
+
+This exercise demonstrates the basic implementation of client-server communication using TCP sockets and illustrates how Java applications can exchange information through network streams.
+
+---
+
+## Evidence
+
+### Server Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/3.3.1.1.png)
+
+### Client Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/3.3.1.2.png)
+
+---
+
+## Conclusions
+
+1. TCP sockets provide a reliable mechanism for communication between distributed applications.
+2. The classes `Socket` and `ServerSocket` simplify the implementation of client-server architectures in Java.
+3. Input and output streams can be used to exchange information over network connections.
+4. The client-server paradigm forms the basis of many modern distributed systems.
+5. This exercise provides a foundation for developing more advanced network services and communication protocols.
+
+---
+
+## References
+
+1. Benavides, L. D., & Gualtero, R. H. (2026). *Introduction to naming schemes, networks, clients, and services with Java* [Laboratory guide]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+2. Benavides, L. D. (2026). *Connectors and Components (C&C) – Call and Return Styles* [Class presentation]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
+
+4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
