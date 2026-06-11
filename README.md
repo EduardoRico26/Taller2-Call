@@ -119,3 +119,118 @@ These results demonstrate that the `URL` class provides an efficient mechanism f
 3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
 
 4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
+
+
+# Exercise 2 - Reading and Storing Web Page Content
+
+## Objective
+
+To develop a Java application capable of requesting a URL from the user, accessing the content available at that address through network streams, and storing the retrieved information in a local HTML file for later visualization in a web browser.
+
+---
+
+## Theoretical Background
+
+Java provides several networking utilities through the `java.net` package. One of the most commonly used classes is `URL`, which represents the location of a resource on the Internet.
+
+A URL can be used not only to identify a resource but also to access its content. By opening an input stream through the `openStream()` method, Java applications can read data from a remote web server in the same way they read data from a file or from the keyboard.
+
+Streams are a fundamental concept in Java I/O operations. In this exercise:
+
+* `InputStream` is used to receive data from a remote resource.
+* `InputStreamReader` converts bytes into characters.
+* `BufferedReader` allows efficient line-by-line reading.
+* `FileWriter` and `PrintWriter` are used to write the retrieved content into a local file.
+
+This mechanism is the basis of many networked applications such as web browsers, API clients, and distributed systems.
+
+---
+
+## Exercise Development
+
+A Java application was implemented to:
+
+1. Request a URL from the user.
+2. Create a `URL` object from the provided address.
+3. Open an input stream to access the remote resource.
+4. Read the content line by line using a `BufferedReader`.
+5. Store the retrieved content into a file named `resultado.html`.
+6. Close all resources properly after the operation is completed.
+
+### Implemented Code
+
+```java
+Scanner scanner = new Scanner(System.in);
+
+System.out.print("Enter a URL: ");
+String direccion = scanner.nextLine();
+
+URL url = new URL(direccion);
+
+BufferedReader reader =
+        new BufferedReader(
+                new InputStreamReader(url.openStream()));
+
+PrintWriter writer =
+        new PrintWriter(
+                new FileWriter("resultado.html"));
+
+String linea;
+
+while ((linea = reader.readLine()) != null) {
+    writer.println(linea);
+}
+
+reader.close();
+writer.close();
+```
+
+---
+
+## Results Analysis
+
+The application successfully established a connection to the specified web resource, downloaded its HTML content, and stored the information in a local file named `resultado.html`.
+
+During testing, it was observed that:
+
+* Valid URLs produced a correct HTML file containing the page source.
+* Invalid URLs generated exceptions such as `MalformedURLException`.
+* URLs pointing to non-existent domains generated `UnknownHostException`, indicating that the DNS resolution process failed.
+
+After opening the generated file in a web browser, the downloaded content was rendered correctly, demonstrating that the application successfully retrieved and stored the remote resource.
+
+This exercise illustrates how Java applications can consume information from external web resources using network streams and basic I/O operations.
+
+---
+
+## Evidence
+
+### Program Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/Ev2.1.png)
+
+### Generated HTML File
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/Ev2.2.png)
+
+---
+
+## Conclusions
+
+1. The `URL` class allows Java applications to access resources available on the Internet.
+2. Network streams can be processed using the same mechanisms employed for local file input operations.
+3. Java's I/O classes provide an efficient way to transfer information from remote resources into local files.
+4. Exception handling is essential when working with network resources due to potential issues such as malformed URLs, unavailable servers, or DNS resolution failures.
+5. This exercise serves as a foundation for understanding HTTP clients and more advanced client-server communication mechanisms.
+
+---
+
+## References
+
+1. Benavides, L. D., & Gualtero, R. H. (2026). *Introduction to naming schemes, networks, clients, and services with Java* [Laboratory guide]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+2. Benavides, L. D. (2026). *Connectors and Components (C&C) – Call and Return Styles* [Class presentation]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
+
+4. Oracle. (n.d.). *Custom Networking Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/networking/index.html
