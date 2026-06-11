@@ -836,3 +836,169 @@ This behavior illustrates the connectionless nature of UDP communication and the
 
 ---
 
+# Exercise 6.4.1 - Distributed Chat using Java RMI
+
+## Objective
+
+To implement a distributed chat application using Java RMI (Remote Method Invocation), allowing two applications running on different hosts to communicate by invoking methods on remote objects.
+
+---
+
+## Theoretical Background
+
+RMI (Remote Method Invocation) is a Java technology that enables an object running in one Java Virtual Machine (JVM) to invoke methods on an object located in another JVM, potentially on a different machine.
+
+The RMI architecture is based on:
+
+* **Remote Interfaces**, which define the methods that can be invoked remotely.
+* **Remote Objects**, which implement those interfaces.
+* **RMI Registry**, which provides a naming service for publishing and locating remote objects.
+* **Stubs and Skeletons**, which transparently handle communication between distributed objects.
+
+Unlike socket-based communication, RMI allows developers to work with distributed systems using an object-oriented programming model.
+
+---
+
+## Exercise Development
+
+A peer-to-peer chat application was implemented using Java RMI.
+
+Each application instance acts simultaneously as:
+
+* A **server**, publishing a remote object that receives incoming messages.
+* A **client**, connecting to another remote object and sending messages.
+
+When the application starts, it requests:
+
+1. A local port where its RMI Registry will be created.
+2. The IP address of the remote application.
+3. The remote port where the other application's RMI Registry is running.
+
+After establishing the connection, both applications can exchange messages through remote method invocations.
+
+### Implemented Components
+
+#### ChatRemote
+
+Remote interface that defines the method:
+
+```java
+void receiveMessage(String message)
+```
+
+#### ChatRemoteImpl
+
+Implementation of the remote interface responsible for receiving and displaying incoming messages.
+
+#### ChatApp
+
+Main application that:
+
+* Creates the local registry.
+* Publishes the local remote object.
+* Connects to the remote registry.
+* Retrieves the remote object reference.
+* Sends messages through remote method calls.
+
+### Communication Flow
+
+```text
+Application A
+     |
+receiveMessage()
+     |
+     V
+Application B
+
+Application B
+     |
+receiveMessage()
+     |
+     V
+Application A
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio641/*.java
+```
+
+### Execute First Chat Instance
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio641.ChatApp
+```
+
+Example:
+
+```text
+Local registry port: 23000
+Remote IP: localhost
+Remote port: 24000
+```
+
+### Execute Second Chat Instance
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio641.ChatApp
+```
+
+Example:
+
+```text
+Local registry port: 24000
+Remote IP: localhost
+Remote port: 23000
+```
+
+---
+
+## Results Analysis
+
+The implemented application successfully established communication between two distributed Java processes using RMI.
+
+Each instance published a remote object and simultaneously consumed services from another remote object.
+
+Messages sent from one application were received and displayed immediately by the other application through remote method invocations.
+
+The solution demonstrates how distributed systems can be developed using Java's object-oriented communication model without manually managing low-level network protocols.
+
+---
+
+## Evidence
+
+### First Chat Instance
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/641.1.png)
+
+### Second Chat Instance
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/641.2.png)
+
+---
+
+## Conclusions
+
+1. Java RMI enables communication between distributed objects using an object-oriented model.
+2. Remote interfaces define the contract of services that can be invoked remotely.
+3. The RMI Registry allows dynamic discovery and publication of remote services.
+4. Each application can act as both client and server simultaneously.
+5. The exercise demonstrates fundamental concepts used in distributed systems, service-oriented architectures, and middleware technologies.
+
+---
+
+## References
+
+1. Benavides, L. D., & Gualtero, R. H. (2026). *Introduction to naming schemes, networks, clients, and services with Java* [Laboratory guide]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+2. Benavides, L. D. (2026). *Connectors and Components (C&C) – Call and Return Styles* [Class presentation]. Escuela Colombiana de Ingeniería Julio Garavito.
+
+3. OpenAI. (2026). *ChatGPT (GPT-5.5 version) [Large Language Model]*. https://chatgpt.com/ (Used primarily as a support tool).
+
+4. Oracle. (n.d.). *Java RMI Tutorial*. Oracle Documentation. https://docs.oracle.com/javase/tutorial/rmi/
+
