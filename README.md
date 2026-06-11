@@ -629,3 +629,126 @@ This exercise demonstrates the relationship between TCP sockets and the HTTP pro
 5. This exercise provides the foundation for understanding the architecture of modern web servers and web applications.
 
 
+# Exercise 5.2.1 - UDP Time Service
+
+## Objective
+
+To implement a client-server application using UDP datagrams in Java, where the server provides the current system time and the client periodically updates its displayed time every five seconds while remaining operational even if the server becomes temporarily unavailable.
+
+---
+
+## Theoretical Background
+
+Unlike TCP, which establishes a reliable connection between two applications, UDP (User Datagram Protocol) is a connectionless protocol that sends independent messages called datagrams.
+
+UDP does not guarantee:
+
+* Delivery of messages.
+* Order of arrival.
+* Error recovery.
+
+However, UDP provides lower communication overhead and is suitable for applications where occasional packet loss is acceptable, such as streaming, online games, monitoring systems, and real-time status updates.
+
+In Java, UDP communication is implemented using:
+
+* `DatagramSocket`
+* `DatagramPacket`
+
+A client sends a datagram to a specific host and port, and the server responds with another datagram without establishing a persistent connection.
+
+---
+
+## Exercise Development
+
+Two applications were implemented:
+
+### TimeServerUDP
+
+The server listens on port `45000` and waits for incoming datagram requests.
+
+Whenever a request is received, the server obtains the current system time and sends it back to the client.
+
+### TimeClientUDP
+
+The client sends a request every five seconds to the server asking for the current time.
+
+The client uses a timeout mechanism to avoid blocking indefinitely if the server becomes unavailable.
+
+If the server responds successfully, the displayed time is updated.
+
+If no response is received, the client preserves the last known time and continues running until the server becomes available again.
+
+### Communication Flow
+
+```text
+Client -----> TIME
+Server -----> Current Time
+
+Client -----> TIME
+Server unavailable
+
+Client -----> TIME
+Server -----> Current Time
+```
+
+---
+
+## Execution Commands
+
+### Compilation
+
+```bash
+javac src/main/java/edu/escuelaing/arsw/ejercicio521/*.java
+```
+
+### Execute the Server
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio521.TimeServerUDP
+```
+
+### Execute the Client
+
+```bash
+java -cp src/main/java edu.escuelaing.arsw.ejercicio521.TimeClientUDP
+```
+
+---
+
+## Results Analysis
+
+The implemented solution successfully demonstrated UDP communication between a client and a server.
+
+The client periodically requested the current time every five seconds and updated its displayed value whenever a response was received.
+
+During testing, the server was intentionally stopped and restarted. The client continued running correctly, displaying the last known time while the server was unavailable and automatically updating again when the server returned.
+
+This behavior illustrates the connectionless nature of UDP communication and the importance of handling missing responses gracefully.
+
+---
+
+## Evidence
+
+### Server Execution
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/521.2.png)
+
+### Client Receiving Updates
+
+![alt text](src/main/java/edu/escuelaing/arsw/Imagenes/521.1.png)
+
+
+```
+
+---
+
+## Conclusions
+
+1. UDP communication does not require establishing a persistent connection between client and server.
+2. Datagram-based communication introduces the possibility of message loss, making timeout handling essential.
+3. The implemented client successfully tolerated temporary server failures without requiring a restart.
+4. UDP is suitable for lightweight and real-time communication scenarios where occasional packet loss is acceptable.
+5. The exercise demonstrates fundamental concepts used in distributed systems and network monitoring services.
+
+---
+
